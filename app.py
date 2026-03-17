@@ -9,29 +9,138 @@ import re
 # Page config
 st.set_page_config(page_title="Content Recommendation System", page_icon="🎬", layout="wide")
 
-# Custom CSS
+# ==========================================
+# MODERN GLASSMORPHISM & GLOW UI (CSS)
+# ==========================================
 st.markdown("""
 <style>
-    .main { background-color: #0a0e1a; color: #e2e0da; }
-    .stTabs [data-baseweb="tab-list"] { gap: 8px; }
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+    /* Global Font & Background */
+    html, body, [class*="css"] {
+        font-family: 'Poppins', sans-serif !important;
+    }
+    
+    .stApp {
+        background-color: #050508 !important;
+    }
+
+    /* Animated Background Orbs */
+    .bg-orb {
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(120px);
+        z-index: -1;
+        animation: float 10s infinite alternate ease-in-out;
+    }
+    .orb-1 { width: 400px; height: 400px; background: rgba(124, 58, 237, 0.15); top: -100px; left: -100px; }
+    .orb-2 { width: 500px; height: 500px; background: rgba(14, 165, 233, 0.1); bottom: -150px; right: -100px; animation-delay: -5s; }
+
+    @keyframes float {
+        0% { transform: translateY(0px) scale(1); }
+        100% { transform: translateY(30px) scale(1.1); }
+    }
+
+    /* Streamlit Tabs Styling */
+    .stTabs [data-baseweb="tab-list"] { 
+        gap: 15px; 
+        background-color: transparent;
+    }
     .stTabs [data-baseweb="tab"] {
-        background-color: #1a1f2e;
-        border-radius: 8px;
-        color: #64748b;
-        padding: 10px 20px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px !important;
+        color: #94a3b8;
+        padding: 10px 25px;
+        transition: all 0.3s ease;
+    }
+    .stTabs [data-baseweb="tab"]:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: white;
     }
     .stTabs [aria-selected="true"] {
-        background-color: #7c3aed22;
-        border: 1px solid #7c3aed;
-        color: #7c3aed;
+        background: rgba(124, 58, 237, 0.2) !important;
+        border: 1px solid #7c3aed !important;
+        color: #ffffff !important;
+        box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);
     }
-    div[data-testid="stMetricValue"] { font-size: 24px; color: #7c3aed; }
+
+    /* Inputs & Selectboxes */
+    div[data-baseweb="input"] > div, div[data-baseweb="select"] > div {
+        background: rgba(255, 255, 255, 0.03) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 12px !important;
+        backdrop-filter: blur(10px);
+        color: white !important;
+        transition: all 0.3s ease;
+    }
+    div[data-baseweb="input"] > div:focus-within, div[data-baseweb="select"] > div:focus-within {
+        border-color: #7c3aed !important;
+        box-shadow: 0 0 15px rgba(124, 58, 237, 0.3) !important;
+    }
+
+    /* Glass Cards for Recommendations */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 15px 20px;
+        margin-bottom: 12px;
+        transition: all 0.3s ease;
+        animation: fadeInUp 0.5s ease-out forwards;
+        opacity: 0;
+    }
+    
+    .glass-card:hover {
+        transform: translateY(-4px);
+    }
+
+    /* TF-IDF Theme (Cyan) */
+    .card-tfidf { border-left: 4px solid #0ea5e9; }
+    .card-tfidf:hover { box-shadow: 0 8px 25px rgba(14, 165, 233, 0.25); border-color: rgba(14, 165, 233, 0.4); }
+    
+    /* Transformer Theme (Purple) */
+    .card-trans { border-left: 4px solid #a855f7; }
+    .card-trans:hover { box-shadow: 0 8px 25px rgba(168, 85, 247, 0.25); border-color: rgba(168, 85, 247, 0.4); }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Customizing Metrics */
+    div[data-testid="stMetricValue"] { 
+        font-size: 32px !important; 
+        font-weight: 600 !important;
+        color: #ffffff !important;
+        text-shadow: 0 0 15px rgba(255,255,255,0.3);
+    }
+    div[data-testid="stMetricLabel"] {
+        color: #94a3b8 !important;
+        font-size: 16px !important;
+    }
+    
+    /* Headers */
+    .gradient-text {
+        background: linear-gradient(135deg, #a855f7, #ec4899);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 600;
+        text-shadow: 0 0 30px rgba(168, 85, 247, 0.3);
+    }
 </style>
+
+<!-- Inject Background Orbs -->
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
 """, unsafe_allow_html=True)
 
+
 # Title
-st.markdown("<h1 style='color: #7c3aed;'>🎬 Content-Based Recommendation System</h1>", unsafe_allow_html=True)
-st.markdown("<p style='color: #64748b;'>Compare TF-IDF vs Sentence Transformers for semantic search</p>", unsafe_allow_html=True)
+st.markdown("<h1 class='gradient-text'>🎬 Content-Based AI Recommender</h1>", unsafe_allow_html=True)
+st.markdown("<p style='color: #94a3b8; font-size: 18px; margin-bottom: 30px;'>Compare traditional TF-IDF vs modern Sentence Transformers for semantic search.</p>", unsafe_allow_html=True)
 
 # Preprocessing function
 def preprocess_text(text):
@@ -104,7 +213,7 @@ def main():
         with tab:
             df = load_data(content_type)
             
-            st.markdown(f"<h3 style='color: #7c3aed;'>Dataset: {len(df)} {content_type}</h3>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='color: #e2e8f0; margin-top: 20px;'>Dataset Size: <span style='color: #a855f7;'>{len(df)}</span> {content_type}</h3>", unsafe_allow_html=True)
             
             title_col = 'title' if content_type == "Movies" else 'song'
             search_query = st.text_input(
@@ -126,99 +235,103 @@ def main():
             )
             
             if selected_title:
-                st.markdown("---")
+                st.markdown("<hr style='border-color: rgba(255,255,255,0.1); margin: 30px 0;'>", unsafe_allow_html=True)
                 
-                with st.spinner("Building TF-IDF matrix..."):
+                with st.spinner("Analyzing semantics..."):
                     tfidf_sim = build_tfidf_matrix(df)
-                
-                with st.spinner("Building Sentence Transformer matrix..."):
                     transformer_sim = build_transformer_matrix(df)
                 
                 col1, col2 = st.columns(2)
                 
+                # TF-IDF Column
                 with col1:
-                    st.markdown("<h4 style='color: #475569;'>📊 TF-IDF (Baseline)</h4>", unsafe_allow_html=True)
-                    st.caption("Word frequency matching • Fast • Exact keyword matches")
+                    st.markdown("<h4 style='color: #0ea5e9; font-weight: 600;'>📊 TF-IDF (Baseline)</h4>", unsafe_allow_html=True)
+                    st.markdown("<p style='color: #94a3b8; font-size: 14px;'>Word frequency matching • Exact keyword hits</p>", unsafe_allow_html=True)
                     
                     tfidf_recs = get_recommendations(selected_title, df, tfidf_sim, content_type, top_n=10)
                     
                     if not tfidf_recs.empty:
                         for idx, row in tfidf_recs.iterrows():
                             score = row['similarity_score']
+                            # Animated delay based on index for cascading fade-in effect
+                            delay = idx * 0.05
                             st.markdown(f"""
-                            <div style='background: #0d0f14; padding: 12px; border-radius: 8px; 
-                                        border-left: 3px solid #475569; margin-bottom: 8px;'>
-                                <div style='color: #e2e0da; font-weight: 600;'>{row[title_col]}</div>
-                                <div style='color: #64748b; font-size: 12px; margin-top: 4px;'>
-                                    Similarity: <span style='color: #7c3aed;'>{score:.3f}</span>
+                            <div class='glass-card card-tfidf' style='animation-delay: {delay}s;'>
+                                <div style='color: #f8fafc; font-weight: 600; font-size: 16px;'>{row[title_col]}</div>
+                                <div style='color: #94a3b8; font-size: 13px; margin-top: 5px;'>
+                                    Similarity Match: <span style='color: #0ea5e9; font-weight: 600;'>{(score*100):.1f}%</span>
                                 </div>
                             </div>
                             """, unsafe_allow_html=True)
                 
+                # Transformers Column
                 with col2:
-                    st.markdown("<h4 style='color: #7c3aed;'>🧠 Sentence Transformers (Upgraded)</h4>", unsafe_allow_html=True)
-                    st.caption("Semantic meaning • Context-aware • Understands intent")
+                    st.markdown("<h4 style='color: #a855f7; font-weight: 600;'>🧠 Sentence Transformers</h4>", unsafe_allow_html=True)
+                    st.markdown("<p style='color: #94a3b8; font-size: 14px;'>Semantic meaning • Context-aware intent</p>", unsafe_allow_html=True)
                     
                     transformer_recs = get_recommendations(selected_title, df, transformer_sim, content_type, top_n=10)
                     
                     if not transformer_recs.empty:
                         for idx, row in transformer_recs.iterrows():
                             score = row['similarity_score']
+                            delay = idx * 0.05
                             st.markdown(f"""
-                            <div style='background: #0d0f14; padding: 12px; border-radius: 8px; 
-                                        border-left: 3px solid #7c3aed; margin-bottom: 8px;'>
-                                <div style='color: #e2e0da; font-weight: 600;'>{row[title_col]}</div>
-                                <div style='color: #64748b; font-size: 12px; margin-top: 4px;'>
-                                    Similarity: <span style='color: #7c3aed;'>{score:.3f}</span>
+                            <div class='glass-card card-trans' style='animation-delay: {delay}s;'>
+                                <div style='color: #f8fafc; font-weight: 600; font-size: 16px;'>{row[title_col]}</div>
+                                <div style='color: #94a3b8; font-size: 13px; margin-top: 5px;'>
+                                    Similarity Match: <span style='color: #a855f7; font-weight: 600;'>{(score*100):.1f}%</span>
                                 </div>
                             </div>
                             """, unsafe_allow_html=True)
                 
-                st.markdown("---")
-                st.markdown("<h4 style='color: #be185d;'>📈 Performance Comparison</h4>", unsafe_allow_html=True)
+                st.markdown("<hr style='border-color: rgba(255,255,255,0.1); margin: 30px 0;'>", unsafe_allow_html=True)
+                st.markdown("<h3 style='text-align: center; color: #f8fafc; margin-bottom: 20px;'>📈 Performance Metrics</h3>", unsafe_allow_html=True)
                 
                 m1, m2, m3 = st.columns(3)
                 
                 avg_tfidf = tfidf_recs['similarity_score'].mean() if not tfidf_recs.empty else 0
                 avg_transformer = transformer_recs['similarity_score'].mean() if not transformer_recs.empty else 0
                 
-                m1.metric("Avg TF-IDF Score", f"{avg_tfidf:.3f}")
-                m2.metric("Avg Transformer Score", f"{avg_transformer:.3f}")
-                improvement = ((avg_transformer - avg_tfidf) / avg_tfidf * 100) if avg_tfidf > 0 else 0
-                m3.metric("Improvement", f"{improvement:.1f}%")
+                # Wrapped in glass containers for extra modern feel
+                with m1:
+                    st.markdown("<div class='glass-card' style='text-align: center; padding: 20px;'>", unsafe_allow_html=True)
+                    st.metric("Avg TF-IDF Score", f"{avg_tfidf:.3f}")
+                    st.markdown("</div>", unsafe_allow_html=True)
+                with m2:
+                    st.markdown("<div class='glass-card' style='text-align: center; padding: 20px;'>", unsafe_allow_html=True)
+                    st.metric("Avg Transformer Score", f"{avg_transformer:.3f}")
+                    st.markdown("</div>", unsafe_allow_html=True)
+                with m3:
+                    improvement = ((avg_transformer - avg_tfidf) / avg_tfidf * 100) if avg_tfidf > 0 else 0
+                    st.markdown("<div class='glass-card' style='text-align: center; padding: 20px; border-color: rgba(0, 255, 136, 0.3);'>", unsafe_allow_html=True)
+                    st.metric("AI Improvement", f"+{improvement:.1f}%")
+                    st.markdown("</div>", unsafe_allow_html=True)
 
 # Sidebar
 with st.sidebar:
-    st.markdown("<h3 style='color: #7c3aed;'>💡 How It Works</h3>", unsafe_allow_html=True)
+    st.markdown("<h2 class='gradient-text' style='font-size: 24px;'>💡 How It Works</h2>", unsafe_allow_html=True)
     
     st.markdown("""
-    **1. Preprocessing**
-    - Combine fields (title + overview + genre)
-    - Lowercase, remove stopwords
-    - Clean special characters
+    <div style='background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px;'>
+    <h4 style='color: #0ea5e9; margin-top: 0;'>1. Preprocessing</h4>
+    <p style='color: #94a3b8; font-size: 13px;'>Combines title + overview + genre, removes stopwords and cleans text.</p>
+    </div>
     
-    **2. TF-IDF (Baseline)**
-    - Word frequency vectorization
-    - Fast, exact keyword matching
-    - 5000 max features, bigrams
+    <div style='background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px;'>
+    <h4 style='color: #0ea5e9; margin-top: 0;'>2. TF-IDF (Baseline)</h4>
+    <p style='color: #94a3b8; font-size: 13px;'>Word frequency vectorization. Fast, exact keyword matching (Max 5000 features).</p>
+    </div>
     
-    **3. Sentence Transformers (Upgraded)**
-    - Pre-trained model: `all-MiniLM-L6-v2`
-    - 384-dimensional embeddings
-    - Semantic understanding
-    - Captures context & meaning
+    <div style='background: rgba(255,255,255,0.03); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px;'>
+    <h4 style='color: #a855f7; margin-top: 0;'>3. Sentence Transformers</h4>
+    <p style='color: #94a3b8; font-size: 13px;'>Uses <code>all-MiniLM-L6-v2</code> for 384-dimensional semantic embeddings. Understands meaning beyond raw text.</p>
+    </div>
+    """, unsafe_allow_html=True)
     
-    **4. Cosine Similarity**
-    - Compute similarity matrix
-    - Built once at startup (cached)
-    - Recommendations = top 10 similar items
-    """)
-    
-    st.markdown("---")
-    st.markdown("<h4 style='color: #0f766e;'>🛠️ Tech Stack</h4>", unsafe_allow_html=True)
+    st.markdown("<br><h4 style='color: #e2e8f0;'>🛠️ Tech Stack</h4>", unsafe_allow_html=True)
     st.code("""
     • Python 3.11
-    • Pandas (data)
+    • Pandas (Data)
     • scikit-learn (TF-IDF)
     • sentence-transformers
     • Streamlit (UI)
