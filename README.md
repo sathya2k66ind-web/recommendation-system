@@ -21,12 +21,16 @@ A dual-approach recommendation engine comparing **TF-IDF** vs **Sentence Transfo
 
 ## 🛠️ Tech Stack
 
+## 🛠️ Tech Stack
+
 | Technology | Purpose |
 |------------|---------|
-| Python 3.11 | Core language |
-| Pandas | Data preprocessing |
-| scikit-learn | TF-IDF & cosine similarity |
-| Streamlit | Interactive dashboard |
+| **Python 3.11** | Core language |
+| **Pandas** | Data preprocessing & manipulation |
+| **scikit-learn** | TF-IDF vectorization & cosine similarity |
+| **sentence-transformers** | Semantic embeddings with `all-MiniLM-L6-v2` |
+| **Streamlit** | Interactive web dashboard |
+| **NumPy** | Numerical computations |
 
 ## 📊 How It Works
 Raw Data (CSV) → Preprocessing → Vectorization → Cosine Similarity → Top 10 Recommendations
@@ -36,7 +40,12 @@ text
 
 1. **Preprocessing**: Combine title, overview, genres → lowercase → remove stopwords
 2. **TF-IDF**: Word frequency vectorization (baseline)
-3. **Enhanced TF-IDF**: Character n-grams for better matching
+**3. Sentence Transformers (Upgraded)**
+- **Model**: `all-MiniLM-L6-v2` (pre-trained)
+- **Embedding size**: 384 dimensions
+- **Pros**: Understands context, captures semantic similarity
+- **Example**: Matches "action thriller" with "intense crime film"
+- **Cons**: Slower than TF-IDF, requires more memory
 4. **Cosine Similarity**: Cached matrix for instant lookups
 5. **Streamlit UI**: Search, compare, explore
 

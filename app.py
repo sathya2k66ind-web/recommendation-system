@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from sentence_transformers import SentenceTransformer
 import re
 
 # Page config
@@ -30,7 +31,7 @@ st.markdown("""
 
 # Title
 st.markdown("<h1 style='color: #7c3aed;'>🎬 Content-Based Recommendation System</h1>", unsafe_allow_html=True)
-st.markdown("<p style='color: #64748b;'>Compare TF-IDF vs Enhanced Vectorization for semantic search</p>", unsafe_allow_html=True)
+st.markdown("<p style='color: #64748b;'>Compare TF-IDF vs Sentence Transformers for semantic search</p>", unsafe_allow_html=True)
 
 # Preprocessing function
 def preprocess_text(text):
@@ -68,17 +69,11 @@ def build_tfidf_matrix(df):
     return cosine_sim
 
 @st.cache_resource
-def build_enhanced_matrix(df):
-    """Build Enhanced TF-IDF with character n-grams (upgraded)"""
-    tfidf = TfidfVectorizer(
-        max_features=10000,
-        ngram_range=(1, 3),
-        analyzer='char_wb',
-        min_df=2,
-        sublinear_tf=True
-    )
-    tfidf_matrix = tfidf.fit_transform(df['combined'])
-    cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
+def build_transformer_matrix(df):
+    """Build Sentence Transformer similarity matrix (upgraded)"""
+    model = SentenceTransformer('all-MiniLM-L6-v2')
+    embeddings = model.encode(df['combined'].tolist(), show_progress_bar=False)
+    cosine_sim = cosine_similarity(embeddings, embeddings)
     return cosine_sim
 
 # Recommendation function
@@ -133,9 +128,11 @@ def main():
             if selected_title:
                 st.markdown("---")
                 
-                with st.spinner("Building recommendation matrices..."):
+                with st.spinner("Building TF-IDF matrix..."):
                     tfidf_sim = build_tfidf_matrix(df)
-                    enhanced_sim = build_enhanced_matrix(df)
+                
+                with st.spinner("Building Sentence Transformer matrix..."):
+                    transformer_sim = build_transformer_matrix(df)
                 
                 col1, col2 = st.columns(2)
                 
@@ -159,13 +156,13 @@ def main():
                             """, unsafe_allow_html=True)
                 
                 with col2:
-                    st.markdown("<h4 style='color: #7c3aed;'>🧠 Enhanced TF-IDF (Upgraded)</h4>", unsafe_allow_html=True)
-                    st.caption("Character n-grams • Context-aware • Better matching")
+                    st.markdown("<h4 style='color: #7c3aed;'>🧠 Sentence Transformers (Upgraded)</h4>", unsafe_allow_html=True)
+                    st.caption("Semantic meaning • Context-aware • Understands intent")
                     
-                    enhanced_recs = get_recommendations(selected_title, df, enhanced_sim, content_type, top_n=10)
+                    transformer_recs = get_recommendations(selected_title, df, transformer_sim, content_type, top_n=10)
                     
-                    if not enhanced_recs.empty:
-                        for idx, row in enhanced_recs.iterrows():
+                    if not transformer_recs.empty:
+                        for idx, row in transformer_recs.iterrows():
                             score = row['similarity_score']
                             st.markdown(f"""
                             <div style='background: #0d0f14; padding: 12px; border-radius: 8px; 
@@ -183,11 +180,11 @@ def main():
                 m1, m2, m3 = st.columns(3)
                 
                 avg_tfidf = tfidf_recs['similarity_score'].mean() if not tfidf_recs.empty else 0
-                avg_enhanced = enhanced_recs['similarity_score'].mean() if not enhanced_recs.empty else 0
+                avg_transformer = transformer_recs['similarity_score'].mean() if not transformer_recs.empty else 0
                 
                 m1.metric("Avg TF-IDF Score", f"{avg_tfidf:.3f}")
-                m2.metric("Avg Enhanced Score", f"{avg_enhanced:.3f}")
-                improvement = ((avg_enhanced - avg_tfidf) / avg_tfidf * 100) if avg_tfidf > 0 else 0
+                m2.metric("Avg Transformer Score", f"{avg_transformer:.3f}")
+                improvement = ((avg_transformer - avg_tfidf) / avg_tfidf * 100) if avg_tfidf > 0 else 0
                 m3.metric("Improvement", f"{improvement:.1f}%")
 
 # Sidebar
@@ -205,11 +202,11 @@ with st.sidebar:
     - Fast, exact keyword matching
     - 5000 max features, bigrams
     
-    **3. Enhanced TF-IDF (Upgraded)**
-    - Character n-grams (1-3)
-    - Sublinear term frequency
-    - 10000 max features
-    - Better semantic matching
+    **3. Sentence Transformers (Upgraded)**
+    - Pre-trained model: `all-MiniLM-L6-v2`
+    - 384-dimensional embeddings
+    - Semantic understanding
+    - Captures context & meaning
     
     **4. Cosine Similarity**
     - Compute similarity matrix
@@ -223,11 +220,9 @@ with st.sidebar:
     • Python 3.11
     • Pandas (data)
     • scikit-learn (TF-IDF)
+    • sentence-transformers
     • Streamlit (UI)
     """)
-    
-    st.markdown("---")
-    st.info("💡 **Note:** Once deployed to Streamlit Cloud, this will use Sentence Transformers for even better results!")
 
 if __name__ == "__main__":
     main()
