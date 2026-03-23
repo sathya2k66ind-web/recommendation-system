@@ -295,72 +295,37 @@ if "launched" not in st.session_state:
 # LANDING PAGE
 # ==========================================
 def show_landing():
+    st.markdown('<div class="landing-wrap">', unsafe_allow_html=True)
+    
+    st.markdown('<div class="landing-badge">✦ &nbsp; ML · NLP · Semantic Search</div>', unsafe_allow_html=True)
+    
+    st.markdown('<h1 class="landing-title">Content-Based<br>AI Recommender</h1>', unsafe_allow_html=True)
+    
+    st.markdown('<p class="landing-sub">Discover movies and songs you\'ll love. Powered by TF-IDF and Sentence Transformers — compare keyword matching against deep semantic understanding, side by side.</p>', unsafe_allow_html=True)
+    
+    st.markdown('<div class="landing-divider"></div>', unsafe_allow_html=True)
+    
     st.markdown("""
-    <div class="landing-wrap">
- 
-        <div class="landing-badge">✦ &nbsp; ML · NLP · Semantic Search</div>
- 
-        <h1 class="landing-title">Content-Based<br>AI Recommender</h1>
- 
-        <p class="landing-sub">
-            Discover movies and songs you'll love. Powered by TF-IDF and 
-            Sentence Transformers — compare keyword matching against deep 
-            semantic understanding, side by side.
-        </p>
- 
-        <div class="landing-divider"></div>
- 
-        <div class="stat-row">
-            <div class="stat-item">
-                <span class="stat-num">4800+</span>
-                <span class="stat-label">Movies</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-num">+66%</span>
-                <span class="stat-label">Semantic Uplift</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-num">384</span>
-                <span class="stat-label">Embedding Dims</span>
-            </div>
-        </div>
- 
-        <div class="feature-grid">
-            <div class="feature-card">
-                <span class="feature-icon">📊</span>
-                <div class="feature-title">TF-IDF Baseline</div>
-                <div class="feature-desc">Classic keyword frequency vectorization. Fast, interpretable, exact matches.</div>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">🧠</span>
-                <div class="feature-title">Sentence Transformers</div>
-                <div class="feature-desc">all-MiniLM-L6-v2 embeddings. Understands context, meaning and intent.</div>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">📈</span>
-                <div class="feature-title">Side-by-Side Compare</div>
-                <div class="feature-desc">See both approaches live. Watch semantic search outperform keyword matching.</div>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">🎬</span>
-                <div class="feature-title">5000+ Movies</div>
-                <div class="feature-desc">Full TMDB dataset. Title, overview and genre combined for rich matching.</div>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">🎵</span>
-                <div class="feature-title">Spotify Songs</div>
-                <div class="feature-desc">Artist, track name and genre vectorized for music discovery.</div>
-            </div>
-            <div class="feature-card">
-                <span class="feature-icon">⚡</span>
-                <div class="feature-title">Cached Similarity</div>
-                <div class="feature-desc">Matrix built once at startup. Every search is an instant lookup.</div>
-            </div>
-        </div>
- 
+    <div class="stat-row">
+        <div class="stat-item"><span class="stat-num">4800+</span><span class="stat-label">Movies</span></div>
+        <div class="stat-item"><span class="stat-num">+66%</span><span class="stat-label">Semantic Uplift</span></div>
+        <div class="stat-item"><span class="stat-num">384</span><span class="stat-label">Embedding Dims</span></div>
     </div>
     """, unsafe_allow_html=True)
- 
+    
+    st.markdown("""
+    <div class="feature-grid">
+        <div class="feature-card"><span class="feature-icon">📊</span><div class="feature-title">TF-IDF Baseline</div><div class="feature-desc">Classic keyword frequency vectorization. Fast, interpretable, exact matches.</div></div>
+        <div class="feature-card"><span class="feature-icon">🧠</span><div class="feature-title">Sentence Transformers</div><div class="feature-desc">all-MiniLM-L6-v2 embeddings. Understands context, meaning and intent.</div></div>
+        <div class="feature-card"><span class="feature-icon">📈</span><div class="feature-title">Side-by-Side Compare</div><div class="feature-desc">See both approaches live. Watch semantic search outperform keyword matching.</div></div>
+        <div class="feature-card"><span class="feature-icon">🎬</span><div class="feature-title">5000+ Movies</div><div class="feature-desc">Full TMDB dataset. Title, overview and genre combined for rich matching.</div></div>
+        <div class="feature-card"><span class="feature-icon">🎵</span><div class="feature-title">Spotify Songs</div><div class="feature-desc">Artist, track name and genre vectorized for music discovery.</div></div>
+        <div class="feature-card"><span class="feature-icon">⚡</span><div class="feature-title">Cached Similarity</div><div class="feature-desc">Matrix built once at startup. Every search is an instant lookup.</div></div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown('</div>', unsafe_allow_html=True)
+
     col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
         if st.button("Launch App →", use_container_width=True):
