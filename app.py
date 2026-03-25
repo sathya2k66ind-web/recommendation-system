@@ -1,5 +1,4 @@
 import streamlit as st
-import streamlit.components.v1 as components
 import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -19,412 +18,285 @@ if "launched" not in st.session_state:
 
 
 # ──────────────────────────────────────────────
-# LANDING PAGE — TRUE FULLSCREEN
+# LANDING PAGE
 # ──────────────────────────────────────────────
 def show_landing():
     
-    # Inject CSS to make it FULLSCREEN (remove all Streamlit padding)
+    # === INJECT ALL CSS FIRST ===
     st.markdown("""
     <style>
-        /* Remove ALL Streamlit default spacing */
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
-        header {visibility: hidden;}
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+        
+        #MainMenu, footer, header {visibility: hidden;}
         
         .stApp {
             background: #000 !important;
         }
         
-        /* Kill all padding */
         .block-container {
             padding: 0 !important;
             max-width: 100% !important;
         }
         
-        section[data-testid="stSidebar"] {
-            display: none;
-        }
+        section[data-testid="stSidebar"] {display: none;}
         
-        /* Remove top padding */
-        .stApp > header + div {
-            padding-top: 0 !important;
-        }
-        
-        div[data-testid="stVerticalBlock"] {
-            gap: 0 !important;
-        }
-        
-        /* ═══════════════════════════════════════════════
-           LANDING PAGE STYLES
-        ═══════════════════════════════════════════════ */
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
-        
-        .landing-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+        /* Wrapper */
+        .land-wrap {
+            min-height: 100vh;
             background: #000;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 20px;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, sans-serif;
-            overflow-y: auto;
-            z-index: 9999;
+            padding: 40px 20px;
+            font-family: 'Inter', sans-serif;
+            position: relative;
         }
         
-        /* Film grain */
-        .landing-container::before {
-            content: "";
+        /* Glows */
+        .glow-orb {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            opacity: 0.03;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
             pointer-events: none;
-            z-index: 10000;
+            z-index: 0;
         }
-        
-        /* Red glows */
         .glow-1 {
-            position: fixed;
-            top: -200px;
-            left: -200px;
-            width: 600px;
-            height: 600px;
+            top: -150px;
+            left: -150px;
             background: radial-gradient(circle, rgba(255,0,0,0.1) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 0;
         }
-        
         .glow-2 {
-            position: fixed;
-            bottom: -200px;
-            right: -200px;
-            width: 600px;
-            height: 600px;
+            bottom: -150px;
+            right: -150px;
             background: radial-gradient(circle, rgba(255,0,0,0.07) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 0;
         }
         
-        /* Floating symbols */
-        .symbol {
+        /* Symbols */
+        .sym {
             position: fixed;
             color: #ff0000;
-            opacity: 0.12;
-            font-size: 100px;
+            opacity: 0.1;
+            font-size: 80px;
             pointer-events: none;
             z-index: 1;
-            animation: drift 20s infinite ease-in-out;
+            animation: float 15s infinite ease-in-out;
         }
-        .sym-1 { top: 8%; left: 5%; animation-delay: 0s; }
-        .sym-2 { top: 15%; right: 8%; font-size: 70px; animation-delay: -5s; }
-        .sym-3 { bottom: 20%; left: 10%; font-size: 50px; animation-delay: -10s; }
-        .sym-4 { bottom: 10%; right: 5%; font-size: 80px; animation-delay: -15s; }
+        .s1 { top: 10%; left: 5%; }
+        .s2 { top: 20%; right: 8%; font-size: 60px; animation-delay: -5s; }
+        .s3 { bottom: 15%; left: 12%; font-size: 50px; animation-delay: -10s; }
+        .s4 { bottom: 20%; right: 6%; font-size: 70px; animation-delay: -3s; }
         
-        @keyframes drift {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(10px, -10px) rotate(2deg); }
-            50% { transform: translate(-5px, 8px) rotate(-1deg); }
-            75% { transform: translate(-10px, -5px) rotate(1deg); }
-        }
-        
-        /* Content wrapper */
-        .landing-content {
-            position: relative;
-            z-index: 100;
-            max-width: 1000px;
-            width: 100%;
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
         }
         
         /* Badge */
         .badge {
             display: inline-flex;
-            align-items: center;
-            gap: 12px;
+            gap: 10px;
             border: 1px solid #333;
-            padding: 10px 24px;
-            color: #666;
+            padding: 10px 22px;
+            color: #555;
             font-size: 11px;
-            letter-spacing: 4px;
+            letter-spacing: 3px;
             text-transform: uppercase;
-            margin-bottom: 40px;
-            animation: fadeIn 0.8s ease;
+            margin-bottom: 35px;
         }
-        .badge-star { color: #ff0000; font-size: 12px; }
+        .badge-dot { color: #ff0000; }
         
         /* Title */
-        .title {
+        .main-title {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(50px, 12vw, 130px);
+            font-size: clamp(45px, 11vw, 110px);
             font-weight: 700;
             line-height: 0.85;
-            letter-spacing: -5px;
+            letter-spacing: -4px;
             text-transform: uppercase;
-            margin-bottom: 28px;
-            animation: titleIn 1s ease;
+            margin-bottom: 25px;
         }
-        .title-outline {
+        .t-outline {
             display: block;
             -webkit-text-stroke: 1.5px #fff;
             -webkit-text-fill-color: transparent;
         }
-        .title-blood {
+        .t-red {
             display: block;
             color: #ff0000;
-            text-shadow: 0 0 80px rgba(255,0,0,0.5);
-        }
-        
-        @keyframes titleIn {
-            from { opacity: 0; transform: translateY(30px); filter: blur(10px); }
-            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+            text-shadow: 0 0 60px rgba(255,0,0,0.4);
         }
         
         /* Subtitle */
-        .subtitle {
+        .sub {
             color: #555;
-            font-size: 15px;
-            max-width: 500px;
+            font-size: 14px;
+            max-width: 460px;
             line-height: 1.8;
-            margin: 0 auto 50px;
-            font-weight: 300;
-            animation: fadeIn 1.2s ease;
+            margin: 0 auto 45px;
         }
         
         /* Divider */
-        .divider {
+        .div-line {
             width: 1px;
-            height: 60px;
+            height: 50px;
             background: linear-gradient(to bottom, transparent, #ff0000, transparent);
-            margin: 0 auto 40px;
-            animation: fadeIn 1s ease;
+            margin: 0 auto 35px;
         }
         
         /* Stats */
-        .stats {
+        .stats-row {
             display: flex;
-            gap: 70px;
+            gap: 60px;
             justify-content: center;
-            margin-bottom: 50px;
             flex-wrap: wrap;
-            animation: fadeUp 1.4s ease;
+            margin-bottom: 45px;
         }
-        .stat { text-align: center; }
+        .stat-box { text-align: center; }
         .stat-num {
             font-family: 'Space Grotesk', sans-serif;
-            font-size: 42px;
+            font-size: 38px;
             font-weight: 700;
             color: #fff;
             display: block;
             letter-spacing: -2px;
         }
-        .stat-label {
+        .stat-lbl {
             color: #444;
             font-size: 10px;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            margin-top: 8px;
+            margin-top: 6px;
+            display: block;
         }
         
-        /* Features grid */
-        .features {
+        /* Features */
+        .feat-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 2px;
-            background: #1a1a1a;
-            margin-bottom: 60px;
-            animation: fadeUp 1.6s ease;
+            gap: 1px;
+            background: #222;
+            max-width: 850px;
+            width: 100%;
+            margin: 0 auto 50px;
         }
-        
-        @media (max-width: 800px) {
-            .features { grid-template-columns: repeat(2, 1fr); }
-            .stats { gap: 40px; }
-            .title { letter-spacing: -3px; }
+        @media (max-width: 768px) {
+            .feat-grid { grid-template-columns: repeat(2, 1fr); }
+            .stats-row { gap: 35px; }
         }
         @media (max-width: 500px) {
-            .features { grid-template-columns: 1fr; }
-            .stats { gap: 30px; }
+            .feat-grid { grid-template-columns: 1fr; }
         }
-        
-        .feature {
+        .feat-card {
             background: #000;
-            padding: 28px 24px;
+            padding: 25px 20px;
             text-align: left;
-            transition: all 0.3s ease;
-            border-left: 2px solid transparent;
+            transition: 0.3s ease;
         }
-        .feature:hover {
+        .feat-card:hover {
             background: #0a0a0a;
-            border-left-color: #ff0000;
+            border-left: 2px solid #ff0000;
         }
-        .feature-icon {
+        .feat-ico {
             color: #ff0000;
             font-size: 18px;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
-        .feature-title {
+        .feat-ttl {
             color: #fff;
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 600;
             font-size: 12px;
             letter-spacing: 1px;
             text-transform: uppercase;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
-        .feature-desc {
+        .feat-desc {
             color: #444;
-            font-size: 12px;
+            font-size: 11px;
             line-height: 1.6;
         }
         
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Button area styling */
-        .button-area {
-            position: relative;
-            z-index: 9999;
-        }
-        
-        /* Override Streamlit button in landing */
-        .landing-btn-wrap {
-            display: flex;
-            justify-content: center;
-            margin-top: -20px;
-        }
-        
-        .landing-btn-wrap .stButton > button {
+        /* Button override */
+        .btn-wrap .stButton > button {
             background: transparent !important;
             color: #fff !important;
             border: 1px solid #fff !important;
             border-radius: 0 !important;
-            padding: 18px 60px !important;
+            padding: 16px 50px !important;
             font-size: 12px !important;
             font-weight: 600 !important;
             font-family: 'Space Grotesk', sans-serif !important;
             letter-spacing: 4px !important;
             text-transform: uppercase !important;
-            transition: all 0.3s ease !important;
-            cursor: pointer !important;
         }
-        
-        .landing-btn-wrap .stButton > button:hover {
+        .btn-wrap .stButton > button:hover {
             background: #ff0000 !important;
             border-color: #ff0000 !important;
-            box-shadow: 0 0 50px rgba(255,0,0,0.5) !important;
+            box-shadow: 0 0 40px rgba(255,0,0,0.5) !important;
         }
     </style>
-    
-    <div class="glow-1"></div>
-    <div class="glow-2"></div>
-    
-    <div class="symbol sym-1">✦</div>
-    <div class="symbol sym-2">✝</div>
-    <div class="symbol sym-3">★</div>
-    <div class="symbol sym-4">✦</div>
-    
-    <div class="landing-container">
-        <div class="landing-content">
-            
-            <div class="badge">
-                <span class="badge-star">✦</span>
-                <span>ML · NLP · SEMANTIC SEARCH</span>
-                <span class="badge-star">✦</span>
-            </div>
-            
-            <h1 class="title">
-                <span class="title-outline">CONTENT</span>
-                <span class="title-blood">RECOMMENDER</span>
-            </h1>
-            
-            <p class="subtitle">
-                Discover what you'll love. TF-IDF meets deep semantic understanding.
-                Watch keyword matching compete against neural embeddings. Side by side.
-            </p>
-            
-            <div class="divider"></div>
-            
-            <div class="stats">
-                <div class="stat">
-                    <span class="stat-num">4.8K</span>
-                    <span class="stat-label">Movies</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-num">+66%</span>
-                    <span class="stat-label">Semantic Uplift</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-num">384</span>
-                    <span class="stat-label">Dimensions</span>
-                </div>
-            </div>
-            
-            <div class="features">
-                <div class="feature">
-                    <div class="feature-icon">◈</div>
-                    <div class="feature-title">TF-IDF Baseline</div>
-                    <div class="feature-desc">Classic keyword frequency vectorization. Fast and interpretable.</div>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">◉</div>
-                    <div class="feature-title">Neural Embeddings</div>
-                    <div class="feature-desc">all-MiniLM-L6-v2 understands context, meaning, intent.</div>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">◎</div>
-                    <div class="feature-title">Live Comparison</div>
-                    <div class="feature-desc">Both approaches running simultaneously. See the difference.</div>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">✦</div>
-                    <div class="feature-title">5000+ Movies</div>
-                    <div class="feature-desc">Full TMDB dataset with titles, overviews, and genres.</div>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">✧</div>
-                    <div class="feature-title">Spotify Tracks</div>
-                    <div class="feature-desc">Artist, track, and genre vectorized for music discovery.</div>
-                </div>
-                <div class="feature">
-                    <div class="feature-icon">⬡</div>
-                    <div class="feature-title">Instant Search</div>
-                    <div class="feature-desc">Pre-computed similarity matrices. Zero latency lookups.</div>
-                </div>
-            </div>
-            
-        </div>
-    </div>
     """, unsafe_allow_html=True)
     
-    # Button (must be Streamlit element for interactivity)
-    st.markdown('<div class="landing-btn-wrap">', unsafe_allow_html=True)
-    col1, col2, col3 = st.columns([1.5, 1, 1.5])
-    with col2:
-        if st.button("✦  ENTER  ✦", use_container_width=True, key="enter_btn"):
+    # === GLOWS ===
+    st.markdown('<div class="glow-orb glow-1"></div><div class="glow-orb glow-2"></div>', unsafe_allow_html=True)
+    
+    # === SYMBOLS ===
+    st.markdown('<div class="sym s1">✦</div><div class="sym s2">✝</div><div class="sym s3">★</div><div class="sym s4">✦</div>', unsafe_allow_html=True)
+    
+    # === OPEN WRAPPER ===
+    st.markdown('<div class="land-wrap">', unsafe_allow_html=True)
+    
+    # === BADGE ===
+    st.markdown('<div class="badge"><span class="badge-dot">✦</span> ML · NLP · SEMANTIC SEARCH <span class="badge-dot">✦</span></div>', unsafe_allow_html=True)
+    
+    # === TITLE ===
+    st.markdown('<h1 class="main-title"><span class="t-outline">CONTENT</span><span class="t-red">RECOMMENDER</span></h1>', unsafe_allow_html=True)
+    
+    # === SUBTITLE ===
+    st.markdown('<p class="sub">Discover what you will love. TF-IDF meets deep semantic understanding. Watch keyword matching compete against neural embeddings.</p>', unsafe_allow_html=True)
+    
+    # === DIVIDER ===
+    st.markdown('<div class="div-line"></div>', unsafe_allow_html=True)
+    
+    # === STATS ===
+    st.markdown('''
+    <div class="stats-row">
+        <div class="stat-box"><span class="stat-num">4.8K</span><span class="stat-lbl">Movies</span></div>
+        <div class="stat-box"><span class="stat-num">+66%</span><span class="stat-lbl">Semantic Uplift</span></div>
+        <div class="stat-box"><span class="stat-num">384</span><span class="stat-lbl">Dimensions</span></div>
+    </div>
+    ''', unsafe_allow_html=True)
+    
+    # === FEATURES ===
+    st.markdown('''
+    <div class="feat-grid">
+        <div class="feat-card"><div class="feat-ico">◈</div><div class="feat-ttl">TF-IDF Baseline</div><div class="feat-desc">Classic keyword frequency vectorization.</div></div>
+        <div class="feat-card"><div class="feat-ico">◉</div><div class="feat-ttl">Neural Embeddings</div><div class="feat-desc">Context and meaning understanding.</div></div>
+        <div class="feat-card"><div class="feat-ico">◎</div><div class="feat-ttl">Live Comparison</div><div class="feat-desc">Both approaches side by side.</div></div>
+        <div class="feat-card"><div class="feat-ico">✦</div><div class="feat-ttl">5000+ Movies</div><div class="feat-desc">Full TMDB dataset included.</div></div>
+        <div class="feat-card"><div class="feat-ico">✧</div><div class="feat-ttl">Spotify Tracks</div><div class="feat-desc">Music discovery enabled.</div></div>
+        <div class="feat-card"><div class="feat-ico">⬡</div><div class="feat-ttl">Instant Search</div><div class="feat-desc">Pre-computed matrices.</div></div>
+    </div>
+    ''', unsafe_allow_html=True)
+    
+    # === CLOSE WRAPPER ===
+    st.markdown('</div>', unsafe_allow_html=True)
+    
+    # === BUTTON (Streamlit native) ===
+    st.markdown('<div class="btn-wrap">', unsafe_allow_html=True)
+    c1, c2, c3 = st.columns([1.3, 1, 1.3])
+    with c2:
+        if st.button("ENTER ✦", use_container_width=True):
             st.session_state.launched = True
             st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
 
 
 # ──────────────────────────────────────────────
-# LAZY LOAD TRANSFORMER MODEL
+# LAZY LOAD MODEL
 # ──────────────────────────────────────────────
 TransformerModel = None
 
@@ -435,7 +307,6 @@ def get_transformer_model():
             from sentence_transformers import SentenceTransformer
             TransformerModel = SentenceTransformer('all-MiniLM-L6-v2')
         except Exception as e:
-            st.warning(f"⚠️ Neural model unavailable: {e}")
             TransformerModel = False
     return TransformerModel
 
@@ -463,8 +334,8 @@ def load_data(content_type):
             df['combined'] = df['song'].fillna('') + ' ' + df['artist'].fillna('') + ' ' + df['genre'].fillna('')
         df['combined'] = df['combined'].apply(preprocess_text)
         return df
-    except FileNotFoundError:
-        st.error(f"❌ Missing: data/{content_type.lower()}.csv")
+    except:
+        st.error("Data file not found")
         st.stop()
 
 
@@ -475,7 +346,7 @@ def build_tfidf_matrix(df):
     return cosine_similarity(matrix, matrix)
 
 
-@st.cache_resource 
+@st.cache_resource
 def build_transformer_matrix(df):
     model = get_transformer_model()
     if model is False:
@@ -499,205 +370,79 @@ def get_recommendations(title, df, cosine_sim, content_type, top_n=10):
 
 
 # ──────────────────────────────────────────────
-# MAIN APP PAGE
+# MAIN APP
 # ──────────────────────────────────────────────
 def show_main_app():
     
-    # Custom CSS for main app
     st.markdown("""
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
         
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
-        header {visibility: hidden;}
-        
+        #MainMenu, footer, header {visibility: hidden;}
         .stApp { background: #000 !important; }
+        .block-container { padding: 2rem 3rem !important; max-width: 1400px !important; }
         
-        .block-container {
-            padding: 2rem 3rem !important;
-            max-width: 1400px !important;
-        }
+        .app-header { font-family: 'Space Grotesk', sans-serif; font-size: 38px; font-weight: 700; color: #fff; letter-spacing: -2px; margin-bottom: 5px; }
+        .app-header span { color: #ff0000; }
+        .app-sub { color: #444; font-size: 13px; letter-spacing: 1px; margin-bottom: 30px; }
         
-        .app-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 42px;
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: -2px;
-            margin-bottom: 5px;
-        }
-        .app-title span { color: #ff0000; }
+        .sec-label { font-family: 'Space Grotesk', sans-serif; color: #555; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 14px; }
+        .sec-label.red { color: #ff0000; }
         
-        .app-sub {
-            color: #444;
-            font-size: 13px;
-            letter-spacing: 1px;
-            margin-bottom: 35px;
-        }
+        .card { background: #0a0a0a; border: 1px solid #1a1a1a; border-left: 3px solid #333; padding: 16px 20px; margin-bottom: 8px; transition: 0.2s; }
+        .card:hover { background: #111; border-left-color: #ff0000; transform: translateX(4px); }
+        .card.neural { border-left-color: #440000; }
+        .card.neural:hover { border-left-color: #ff0000; }
+        .card-title { color: #e0e0e0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+        .card-score { color: #444; font-size: 11px; letter-spacing: 1px; }
+        .card-score span { color: #666; font-weight: 600; }
+        .card-score span.red { color: #ff0000; }
         
-        .section-label {
-            font-family: 'Space Grotesk', sans-serif;
-            color: #555;
-            font-size: 11px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 16px;
-        }
-        .section-label.red { color: #ff0000; }
-        
-        .rec-card {
-            background: #0a0a0a;
-            border: 1px solid #1a1a1a;
-            border-left: 3px solid #333;
-            padding: 18px 22px;
-            margin-bottom: 10px;
-            transition: all 0.25s ease;
-        }
-        .rec-card:hover {
-            background: #111;
-            border-left-color: #ff0000;
-            transform: translateX(5px);
-        }
-        .rec-card.neural { border-left-color: #550000; }
-        .rec-card.neural:hover { border-left-color: #ff0000; }
-        
-        .rec-title {
-            color: #e0e0e0;
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
-            font-size: 15px;
-            margin-bottom: 5px;
-        }
-        .rec-score {
-            color: #444;
-            font-size: 11px;
-            letter-spacing: 1px;
-        }
-        .rec-score span { color: #777; font-weight: 600; }
-        .rec-score span.red { color: #ff0000; }
-        
-        /* Tabs */
-        .stTabs [data-baseweb="tab-list"] { 
-            background: transparent; 
-            border-bottom: 1px solid #1a1a1a; 
-            gap: 0; 
-        }
-        .stTabs [data-baseweb="tab"] {
-            background: transparent;
-            color: #444;
-            border: none;
-            border-bottom: 2px solid transparent;
-            padding: 14px 28px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 2px;
-        }
+        .stTabs [data-baseweb="tab-list"] { background: transparent; border-bottom: 1px solid #1a1a1a; gap: 0; }
+        .stTabs [data-baseweb="tab"] { background: transparent; color: #444; border: none; border-bottom: 2px solid transparent; padding: 12px 24px; font-size: 12px; letter-spacing: 2px; }
         .stTabs [data-baseweb="tab"]:hover { color: #fff; }
-        .stTabs [aria-selected="true"] { 
-            color: #fff !important; 
-            border-bottom: 2px solid #ff0000 !important; 
-        }
+        .stTabs [aria-selected="true"] { color: #fff !important; border-bottom: 2px solid #ff0000 !important; }
         
-        /* Inputs */
-        .stTextInput > div > div { 
-            background: #0a0a0a !important; 
-            border: 1px solid #222 !important; 
-            border-radius: 0 !important; 
-        }
+        .stTextInput > div > div { background: #0a0a0a !important; border: 1px solid #222 !important; border-radius: 0 !important; }
         .stTextInput input { color: #fff !important; }
-        .stSelectbox > div > div { 
-            background: #0a0a0a !important; 
-            border: 1px solid #222 !important; 
-            border-radius: 0 !important; 
-        }
+        .stSelectbox > div > div { background: #0a0a0a !important; border: 1px solid #222 !important; border-radius: 0 !important; }
         
-        /* Button */
-        .stButton > button {
-            background: transparent !important;
-            color: #666 !important;
-            border: 1px solid #333 !important;
-            border-radius: 0 !important;
-            font-family: 'Space Grotesk', sans-serif !important;
-            font-size: 11px !important;
-            letter-spacing: 2px !important;
-            padding: 10px 24px !important;
-        }
-        .stButton > button:hover {
-            border-color: #ff0000 !important;
-            color: #ff0000 !important;
-        }
+        .stButton > button { background: transparent !important; color: #555 !important; border: 1px solid #333 !important; border-radius: 0 !important; font-size: 11px !important; letter-spacing: 2px !important; }
+        .stButton > button:hover { border-color: #ff0000 !important; color: #ff0000 !important; }
         
-        /* Metrics */
-        [data-testid="stMetricValue"] { 
-            font-family: 'Space Grotesk', sans-serif !important; 
-            font-size: 32px !important; 
-            color: #fff !important; 
-            letter-spacing: -1px;
-        }
-        [data-testid="stMetricLabel"] { 
-            color: #444 !important; 
-            font-size: 10px !important; 
-            letter-spacing: 2px !important;
-            text-transform: uppercase;
-        }
-        
-        /* Metric cards */
-        .metric-card {
-            background: #0a0a0a;
-            border: 1px solid #1a1a1a;
-            padding: 24px;
-            text-align: center;
-        }
-        .metric-card.highlight {
-            border-left: 3px solid #ff0000;
-        }
+        [data-testid="stMetricValue"] { font-family: 'Space Grotesk', sans-serif !important; font-size: 30px !important; color: #fff !important; }
+        [data-testid="stMetricLabel"] { color: #444 !important; font-size: 10px !important; letter-spacing: 2px !important; }
     </style>
     """, unsafe_allow_html=True)
     
-    # Back button
     if st.button("← BACK"):
         st.session_state.launched = False
         st.rerun()
     
-    # Header
-    st.markdown("<div class='app-title'>RECOMMENDER<span>.</span></div>", unsafe_allow_html=True)
-    st.markdown("<div class='app-sub'>TF-IDF vs Neural Semantic Search — Side by Side Comparison</div>", unsafe_allow_html=True)
+    st.markdown('<div class="app-header">RECOMMENDER<span>.</span></div>', unsafe_allow_html=True)
+    st.markdown('<div class="app-sub">TF-IDF vs Neural Semantic Search</div>', unsafe_allow_html=True)
     
-    # Tabs
-    tab1, tab2 = st.tabs(["✦  MOVIES", "✦  SONGS"])
+    tab1, tab2 = st.tabs(["✦ MOVIES", "✦ SONGS"])
     
     for tab, content_type in [(tab1, "Movies"), (tab2, "Songs")]:
         with tab:
             df = load_data(content_type)
             
-            st.markdown(f"<div class='section-label'>DATASET: {len(df)} {content_type.upper()}</div>", unsafe_allow_html=True)
+            st.markdown(f'<div class="sec-label">DATASET: {len(df)} {content_type.upper()}</div>', unsafe_allow_html=True)
             
             title_col = 'title' if content_type == "Movies" else 'song'
             
-            # Search
-            search = st.text_input(
-                "Search", 
-                placeholder="Type to search...", 
-                key=f"search_{content_type}", 
-                label_visibility="collapsed"
-            )
+            search = st.text_input("Search", placeholder="Type to search...", key=f"search_{content_type}", label_visibility="collapsed")
             
             if search:
                 options = df[df[title_col].str.contains(search, case=False, na=False)][title_col].tolist()
             else:
                 options = df[title_col].head(25).tolist()
             
-            selected = st.selectbox(
-                "Select", 
-                options, 
-                key=f"select_{content_type}", 
-                label_visibility="collapsed"
-            )
+            selected = st.selectbox("Select", options, key=f"select_{content_type}", label_visibility="collapsed")
             
             if selected:
-                st.markdown("<hr style='border:none;border-top:1px solid #1a1a1a;margin:30px 0;'>", unsafe_allow_html=True)
+                st.markdown("<hr style='border:none;border-top:1px solid #1a1a1a;margin:25px 0;'>", unsafe_allow_html=True)
                 
                 with st.spinner(""):
                     tfidf_sim = build_tfidf_matrix(df)
@@ -705,57 +450,34 @@ def show_main_app():
                 
                 col1, col2 = st.columns(2)
                 
-                # TF-IDF results
                 with col1:
-                    st.markdown("<div class='section-label'>TF-IDF // KEYWORD MATCHING</div>", unsafe_allow_html=True)
+                    st.markdown('<div class="sec-label">TF-IDF // KEYWORD</div>', unsafe_allow_html=True)
                     tfidf_recs = get_recommendations(selected, df, tfidf_sim, content_type)
                     for _, row in tfidf_recs.iterrows():
-                        st.markdown(f"""
-                        <div class='rec-card'>
-                            <div class='rec-title'>{row[title_col]}</div>
-                            <div class='rec-score'>MATCH <span>{row['similarity_score']*100:.1f}%</span></div>
-                        </div>
-                        """, unsafe_allow_html=True)
+                        st.markdown(f'<div class="card"><div class="card-title">{row[title_col]}</div><div class="card-score">MATCH <span>{row["similarity_score"]*100:.1f}%</span></div></div>', unsafe_allow_html=True)
                 
-                # Neural results
                 with col2:
                     if trans_sim is not None:
-                        st.markdown("<div class='section-label red'>NEURAL // SEMANTIC</div>", unsafe_allow_html=True)
+                        st.markdown('<div class="sec-label red">NEURAL // SEMANTIC</div>', unsafe_allow_html=True)
                         trans_recs = get_recommendations(selected, df, trans_sim, content_type)
                         for _, row in trans_recs.iterrows():
-                            st.markdown(f"""
-                            <div class='rec-card neural'>
-                                <div class='rec-title'>{row[title_col]}</div>
-                                <div class='rec-score'>MATCH <span class='red'>{row['similarity_score']*100:.1f}%</span></div>
-                            </div>
-                            """, unsafe_allow_html=True)
+                            st.markdown(f'<div class="card neural"><div class="card-title">{row[title_col]}</div><div class="card-score">MATCH <span class="red">{row["similarity_score"]*100:.1f}%</span></div></div>', unsafe_allow_html=True)
                     else:
                         st.warning("Neural model unavailable")
                 
-                # Metrics
-                st.markdown("<hr style='border:none;border-top:1px solid #1a1a1a;margin:35px 0;'>", unsafe_allow_html=True)
-                st.markdown("<div class='section-label' style='text-align:center;'>PERFORMANCE COMPARISON</div>", unsafe_allow_html=True)
+                st.markdown("<hr style='border:none;border-top:1px solid #1a1a1a;margin:30px 0;'>", unsafe_allow_html=True)
                 
                 avg_tfidf = tfidf_recs['similarity_score'].mean() if not tfidf_recs.empty else 0
                 avg_trans = trans_recs['similarity_score'].mean() if trans_sim is not None and not trans_recs.empty else 0
                 improvement = ((avg_trans - avg_tfidf) / avg_tfidf * 100) if avg_tfidf > 0 else 0
                 
                 m1, m2, m3 = st.columns(3)
-                
                 with m1:
-                    st.markdown("<div class='metric-card'>", unsafe_allow_html=True)
                     st.metric("TF-IDF AVG", f"{avg_tfidf:.3f}")
-                    st.markdown("</div>", unsafe_allow_html=True)
-                    
                 with m2:
-                    st.markdown("<div class='metric-card'>", unsafe_allow_html=True)
                     st.metric("NEURAL AVG", f"{avg_trans:.3f}")
-                    st.markdown("</div>", unsafe_allow_html=True)
-                    
                 with m3:
-                    st.markdown("<div class='metric-card highlight'>", unsafe_allow_html=True)
                     st.metric("IMPROVEMENT", f"+{improvement:.1f}%")
-                    st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ──────────────────────────────────────────────
