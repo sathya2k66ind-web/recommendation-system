@@ -17,12 +17,11 @@ if "launched" not in st.session_state:
     st.session_state.launched = False
 
 
-# ──────────────────────────────────────────────
-# LANDING PAGE — ENHANCED
-# ──────────────────────────────────────────────
+# ══════════════════════════════════════════════
+# LANDING PAGE
+# ══════════════════════════════════════════════
 def show_landing():
     
-    # === INJECT ALL CSS ===
     st.markdown("""
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
@@ -40,9 +39,6 @@ def show_landing():
         
         section[data-testid="stSidebar"] {display: none;}
         
-        /* ═══════════════════════════════════════
-           WRAPPER
-        ═══════════════════════════════════════ */
         .land-wrap {
             min-height: 100vh;
             background: #000;
@@ -56,9 +52,6 @@ def show_landing():
             position: relative;
         }
         
-        /* ═══════════════════════════════════════
-           GLOWS — MORE INTENSE
-        ═══════════════════════════════════════ */
         .glow-orb {
             position: fixed;
             border-radius: 50%;
@@ -88,9 +81,6 @@ def show_landing():
             background: radial-gradient(circle, rgba(255,0,0,0.05) 0%, transparent 60%);
         }
         
-        /* ═══════════════════════════════════════
-           FLOATING SYMBOLS — LARGER
-        ═══════════════════════════════════════ */
         .sym {
             position: fixed;
             color: #ff0000;
@@ -111,9 +101,6 @@ def show_landing():
             50% { transform: translateY(-20px) rotate(3deg); }
         }
         
-        /* ═══════════════════════════════════════
-           BADGE — LARGER + RED ACCENT
-        ═══════════════════════════════════════ */
         .badge {
             display: inline-flex;
             gap: 14px;
@@ -137,9 +124,6 @@ def show_landing():
             50% { opacity: 0.5; }
         }
         
-        /* ═══════════════════════════════════════
-           TITLE — MUCH LARGER + CENTERED
-        ═══════════════════════════════════════ */
         .main-title {
             font-family: 'Space Grotesk', sans-serif;
             font-size: clamp(70px, 15vw, 180px);
@@ -171,9 +155,6 @@ def show_landing():
             100% { text-shadow: 0 0 100px rgba(255,0,0,0.8), 0 0 200px rgba(255,0,0,0.4); }
         }
         
-        /* ═══════════════════════════════════════
-           SUBTITLE — LARGER
-        ═══════════════════════════════════════ */
         .sub {
             color: #888;
             font-size: 18px;
@@ -187,9 +168,6 @@ def show_landing():
             font-weight: 600;
         }
         
-        /* ═══════════════════════════════════════
-           DIVIDER — RED
-        ═══════════════════════════════════════ */
         .div-line {
             width: 2px;
             height: 70px;
@@ -197,9 +175,6 @@ def show_landing():
             margin: 0 auto 45px;
         }
         
-        /* ═══════════════════════════════════════
-           STATS — LARGER + RED ACCENTS
-        ═══════════════════════════════════════ */
         .stats-row {
             display: flex;
             gap: 80px;
@@ -238,9 +213,6 @@ def show_landing():
             display: block;
         }
         
-        /* ═══════════════════════════════════════
-           FEATURES — LARGER + MORE RED
-        ═══════════════════════════════════════ */
         .feat-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -291,9 +263,6 @@ def show_landing():
             line-height: 1.7;
         }
         
-        /* ═══════════════════════════════════════
-           ENTER BUTTON — RED HOVER
-        ═══════════════════════════════════════ */
         .btn-wrap {
             margin-top: 10px;
         }
@@ -310,8 +279,6 @@ def show_landing():
             letter-spacing: 5px !important;
             text-transform: uppercase !important;
             transition: all 0.3s ease !important;
-            position: relative !important;
-            overflow: hidden !important;
         }
         
         .btn-wrap .stButton > button:hover {
@@ -325,11 +292,6 @@ def show_landing():
             transform: scale(1.02) !important;
         }
         
-        .btn-wrap .stButton > button:active {
-            transform: scale(0.98) !important;
-        }
-        
-        /* Hint text */
         .hint {
             color: #333;
             font-size: 12px;
@@ -346,14 +308,12 @@ def show_landing():
     </style>
     """, unsafe_allow_html=True)
     
-    # === GLOWS ===
     st.markdown('''
     <div class="glow-orb glow-1"></div>
     <div class="glow-orb glow-2"></div>
     <div class="glow-orb glow-3"></div>
     ''', unsafe_allow_html=True)
     
-    # === SYMBOLS ===
     st.markdown('''
     <div class="sym s1">✦</div>
     <div class="sym s2">✝</div>
@@ -363,10 +323,8 @@ def show_landing():
     <div class="sym s6">★</div>
     ''', unsafe_allow_html=True)
     
-    # === OPEN WRAPPER ===
     st.markdown('<div class="land-wrap">', unsafe_allow_html=True)
     
-    # === BADGE ===
     st.markdown('''
     <div class="badge">
         <span class="badge-dot">✦</span> 
@@ -375,7 +333,6 @@ def show_landing():
     </div>
     ''', unsafe_allow_html=True)
     
-    # === TITLE ===
     st.markdown('''
     <h1 class="main-title">
         <span class="t-outline">CONTENT</span>
@@ -383,7 +340,6 @@ def show_landing():
     </h1>
     ''', unsafe_allow_html=True)
     
-    # === SUBTITLE ===
     st.markdown('''
     <p class="sub">
         Discover what you will love. <strong>TF-IDF</strong> meets deep <strong>semantic understanding</strong>. 
@@ -391,10 +347,8 @@ def show_landing():
     </p>
     ''', unsafe_allow_html=True)
     
-    # === DIVIDER ===
     st.markdown('<div class="div-line"></div>', unsafe_allow_html=True)
     
-    # === STATS ===
     st.markdown('''
     <div class="stats-row">
         <div class="stat-box">
@@ -412,7 +366,6 @@ def show_landing():
     </div>
     ''', unsafe_allow_html=True)
     
-    # === FEATURES ===
     st.markdown('''
     <div class="feat-grid">
         <div class="feat-card">
@@ -448,10 +401,8 @@ def show_landing():
     </div>
     ''', unsafe_allow_html=True)
     
-    # === CLOSE WRAPPER ===
     st.markdown('</div>', unsafe_allow_html=True)
     
-    # === BUTTON ===
     st.markdown('<div class="btn-wrap">', unsafe_allow_html=True)
     c1, c2, c3 = st.columns([1.2, 1, 1.2])
     with c2:
@@ -460,13 +411,12 @@ def show_landing():
             st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
     
-    # === HINT ===
     st.markdown('<p class="hint" style="text-align:center;">CLICK TO INITIALIZE</p>', unsafe_allow_html=True)
 
 
-# ──────────────────────────────────────────────
+# ══════════════════════════════════════════════
 # LAZY LOAD MODEL
-# ──────────────────────────────────────────────
+# ══════════════════════════════════════════════
 TransformerModel = None
 
 def get_transformer_model():
@@ -480,9 +430,9 @@ def get_transformer_model():
     return TransformerModel
 
 
-# ──────────────────────────────────────────────
+# ══════════════════════════════════════════════
 # DATA HELPERS
-# ──────────────────────────────────────────────
+# ══════════════════════════════════════════════
 def preprocess_text(text):
     if pd.isna(text):
         return ""
@@ -538,64 +488,539 @@ def get_recommendations(title, df, cosine_sim, content_type, top_n=10):
     return result
 
 
-# ──────────────────────────────────────────────
-# MAIN APP
-# ──────────────────────────────────────────────
+# ══════════════════════════════════════════════
+# MAIN APP — FULL OPIUM MODE
+# ══════════════════════════════════════════════
 def show_main_app():
     
+    # === HARDCORE OPIUM CSS ===
     st.markdown("""
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap');
         
+        /* ═══════════════════════════════════════
+           HIDE DEFAULTS
+        ═══════════════════════════════════════ */
         #MainMenu, footer, header {visibility: hidden;}
-        .stApp { background: #000 !important; }
-        .block-container { padding: 2rem 3rem !important; max-width: 1400px !important; }
         
-        .app-header { font-family: 'Space Grotesk', sans-serif; font-size: 42px; font-weight: 700; color: #fff; letter-spacing: -2px; margin-bottom: 5px; }
-        .app-header span { color: #ff0000; }
-        .app-sub { color: #555; font-size: 14px; letter-spacing: 1px; margin-bottom: 35px; }
+        .stApp { 
+            background: #000 !important; 
+        }
         
-        .sec-label { font-family: 'Space Grotesk', sans-serif; color: #666; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px; }
-        .sec-label.red { color: #ff0000; }
+        .block-container { 
+            padding: 2rem 3rem !important; 
+            max-width: 1500px !important; 
+        }
         
-        .card { background: #0a0a0a; border: 1px solid #1a1a1a; border-left: 3px solid #333; padding: 18px 22px; margin-bottom: 10px; transition: 0.25s; }
-        .card:hover { background: #111; border-left-color: #ff0000; transform: translateX(5px); }
-        .card.neural { border-left-color: #550000; }
-        .card.neural:hover { border-left-color: #ff0000; }
-        .card-title { color: #e0e0e0; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; margin-bottom: 5px; }
-        .card-score { color: #555; font-size: 12px; letter-spacing: 1px; }
-        .card-score span { color: #888; font-weight: 600; }
-        .card-score span.red { color: #ff0000; }
+        /* ═══════════════════════════════════════
+           FILM GRAIN OVERLAY
+        ═══════════════════════════════════════ */
+        .stApp::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 9999;
+        }
         
-        .stTabs [data-baseweb="tab-list"] { background: transparent; border-bottom: 1px solid #1a1a1a; gap: 0; }
-        .stTabs [data-baseweb="tab"] { background: transparent; color: #555; border: none; border-bottom: 2px solid transparent; padding: 14px 28px; font-size: 13px; letter-spacing: 2px; font-weight: 600; }
-        .stTabs [data-baseweb="tab"]:hover { color: #fff; }
-        .stTabs [aria-selected="true"] { color: #fff !important; border-bottom: 2px solid #ff0000 !important; }
+        /* ═══════════════════════════════════════
+           FLOATING SYMBOLS
+        ═══════════════════════════════════════ */
+        .app-sym {
+            position: fixed;
+            color: #ff0000;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatSym 20s infinite ease-in-out;
+        }
+        .as1 { top: 5%; left: 3%; font-size: 80px; opacity: 0.08; }
+        .as2 { top: 30%; right: 2%; font-size: 60px; opacity: 0.06; animation-delay: -5s; }
+        .as3 { bottom: 20%; left: 2%; font-size: 50px; opacity: 0.07; animation-delay: -10s; }
+        .as4 { bottom: 10%; right: 3%; font-size: 70px; opacity: 0.05; animation-delay: -15s; }
+        .as5 { top: 60%; left: 1%; font-size: 40px; opacity: 0.04; animation-delay: -8s; }
+        .as6 { top: 15%; left: 50%; font-size: 30px; opacity: 0.03; animation-delay: -12s; }
         
-        .stTextInput > div > div { background: #0a0a0a !important; border: 1px solid #222 !important; border-radius: 0 !important; }
-        .stTextInput > div > div:focus-within { border-color: #ff0000 !important; }
-        .stTextInput input { color: #fff !important; font-size: 14px !important; }
-        .stSelectbox > div > div { background: #0a0a0a !important; border: 1px solid #222 !important; border-radius: 0 !important; }
+        @keyframes floatSym {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(5deg); }
+            50% { transform: translateY(10px) rotate(-3deg); }
+            75% { transform: translateY(-8px) rotate(2deg); }
+        }
         
-        .stButton > button { background: transparent !important; color: #666 !important; border: 1px solid #333 !important; border-radius: 0 !important; font-size: 12px !important; letter-spacing: 2px !important; padding: 10px 24px !important; }
-        .stButton > button:hover { border-color: #ff0000 !important; color: #ff0000 !important; background: rgba(255,0,0,0.1) !important; }
+        /* ═══════════════════════════════════════
+           RED GLOWS
+        ═══════════════════════════════════════ */
+        .app-glow {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .ag1 {
+            top: -150px;
+            left: -150px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,0,0,0.1) 0%, transparent 70%);
+        }
+        .ag2 {
+            bottom: -150px;
+            right: -150px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,0,0,0.08) 0%, transparent 70%);
+        }
+        .ag3 {
+            top: 40%;
+            right: 10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,0,0,0.05) 0%, transparent 70%);
+            animation: pulseGlow 4s infinite alternate;
+        }
         
-        [data-testid="stMetricValue"] { font-family: 'Space Grotesk', sans-serif !important; font-size: 34px !important; color: #fff !important; letter-spacing: -1px; }
-        [data-testid="stMetricLabel"] { color: #555 !important; font-size: 11px !important; letter-spacing: 2px !important; text-transform: uppercase; }
+        @keyframes pulseGlow {
+            0% { opacity: 0.5; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.1); }
+        }
         
-        .metric-wrap { background: #0a0a0a; border: 1px solid #1a1a1a; padding: 20px; text-align: center; }
-        .metric-wrap.highlight { border-left: 3px solid #ff0000; }
+        /* ═══════════════════════════════════════
+           HEADER
+        ═══════════════════════════════════════ */
+        .app-header {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 56px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -3px;
+            margin-bottom: 8px;
+            position: relative;
+            display: inline-block;
+            animation: fadeSlideIn 0.8s ease;
+        }
+        .app-header span { 
+            color: #ff0000;
+            text-shadow: 0 0 30px rgba(255,0,0,0.5);
+        }
+        .app-header::after {
+            content: '✦';
+            position: absolute;
+            top: -10px;
+            right: -30px;
+            font-size: 16px;
+            color: #ff0000;
+            opacity: 0.7;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 0.3; }
+        }
+        
+        .app-sub {
+            color: #666;
+            font-size: 16px;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            animation: fadeSlideIn 1s ease;
+        }
+        .app-sub strong {
+            color: #ff0000;
+        }
+        
+        /* ═══════════════════════════════════════
+           TABS
+        ═══════════════════════════════════════ */
+        .stTabs [data-baseweb="tab-list"] { 
+            background: transparent; 
+            border-bottom: 2px solid #1a1a1a; 
+            gap: 0; 
+        }
+        .stTabs [data-baseweb="tab"] { 
+            background: transparent;
+            color: #555;
+            border: none;
+            border-bottom: 3px solid transparent;
+            padding: 16px 32px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            transition: all 0.3s ease;
+        }
+        .stTabs [data-baseweb="tab"]:hover { 
+            color: #ff0000;
+            background: rgba(255,0,0,0.05);
+        }
+        .stTabs [aria-selected="true"] { 
+            color: #ff0000 !important; 
+            border-bottom: 3px solid #ff0000 !important;
+            background: rgba(255,0,0,0.08) !important;
+        }
+        
+        /* ═══════════════════════════════════════
+           SECTION LABELS
+        ═══════════════════════════════════════ */
+        .sec-label {
+            font-family: 'Space Grotesk', sans-serif;
+            color: #555;
+            font-size: 13px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: fadeIn 0.6s ease;
+        }
+        .sec-label::before {
+            content: '✦';
+            color: #ff0000;
+            font-size: 10px;
+            animation: pulse 2s infinite;
+        }
+        .sec-label.red { 
+            color: #ff0000; 
+            text-shadow: 0 0 20px rgba(255,0,0,0.3);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* ═══════════════════════════════════════
+           INPUTS
+        ═══════════════════════════════════════ */
+        .stTextInput > div > div { 
+            background: #0a0a0a !important; 
+            border: 2px solid #1a1a1a !important; 
+            border-radius: 0 !important;
+            transition: all 0.3s ease;
+        }
+        .stTextInput > div > div:focus-within { 
+            border-color: #ff0000 !important;
+            box-shadow: 0 0 20px rgba(255,0,0,0.2) !important;
+        }
+        .stTextInput input { 
+            color: #fff !important; 
+            font-size: 15px !important;
+            font-family: 'Inter', sans-serif !important;
+        }
+        .stTextInput input::placeholder {
+            color: #444 !important;
+        }
+        
+        .stSelectbox > div > div { 
+            background: #0a0a0a !important; 
+            border: 2px solid #1a1a1a !important; 
+            border-radius: 0 !important; 
+        }
+        .stSelectbox > div > div:focus-within {
+            border-color: #ff0000 !important;
+        }
+        
+        /* ═══════════════════════════════════════
+           CARDS — ANIMATED
+        ═══════════════════════════════════════ */
+        .card {
+            background: linear-gradient(135deg, #0a0a0a 0%, #050505 100%);
+            border: 1px solid #1a1a1a;
+            border-left: 4px solid #333;
+            padding: 20px 24px;
+            margin-bottom: 12px;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            animation: cardSlide 0.5s ease forwards;
+            opacity: 0;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,0,0,0.05), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .card:hover {
+            background: linear-gradient(135deg, #111 0%, #0a0a0a 100%);
+            border-left-color: #ff0000;
+            transform: translateX(8px);
+            box-shadow: 0 5px 30px rgba(255,0,0,0.15);
+        }
+        
+        .card:hover::before {
+            left: 100%;
+        }
+        
+        .card.neural { 
+            border-left-color: #550000; 
+        }
+        .card.neural:hover { 
+            border-left-color: #ff0000;
+            box-shadow: 0 5px 30px rgba(255,0,0,0.2);
+        }
+        
+        @keyframes cardSlide {
+            from { 
+                opacity: 0; 
+                transform: translateX(-30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateX(0); 
+            }
+        }
+        
+        .card-title {
+            color: #e8e8e8;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .card-rank {
+            color: #ff0000;
+            font-size: 12px;
+            font-weight: 700;
+            opacity: 0.7;
+        }
+        
+        .card-score {
+            color: #555;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .card-score span { 
+            color: #888; 
+            font-weight: 700;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .card-score span.red { 
+            color: #ff0000;
+            text-shadow: 0 0 10px rgba(255,0,0,0.5);
+        }
+        
+        /* ═══════════════════════════════════════
+           BACK BUTTON
+        ═══════════════════════════════════════ */
+        .stButton > button {
+            background: transparent !important;
+            color: #666 !important;
+            border: 1px solid #333 !important;
+            border-radius: 0 !important;
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-size: 12px !important;
+            letter-spacing: 3px !important;
+            padding: 12px 28px !important;
+            transition: all 0.3s ease !important;
+        }
+        .stButton > button:hover {
+            border-color: #ff0000 !important;
+            color: #ff0000 !important;
+            background: rgba(255,0,0,0.1) !important;
+            box-shadow: 0 0 20px rgba(255,0,0,0.2) !important;
+        }
+        
+        /* ═══════════════════════════════════════
+           METRICS
+        ═══════════════════════════════════════ */
+        [data-testid="stMetricValue"] { 
+            font-family: 'Space Grotesk', sans-serif !important; 
+            font-size: 38px !important; 
+            color: #fff !important; 
+            letter-spacing: -2px;
+        }
+        [data-testid="stMetricLabel"] { 
+            color: #555 !important; 
+            font-size: 11px !important; 
+            letter-spacing: 3px !important;
+            text-transform: uppercase;
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, #0a0a0a 0%, #050505 100%);
+            border: 1px solid #1a1a1a;
+            padding: 28px 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: metricFade 0.8s ease forwards;
+            opacity: 0;
+        }
+        
+        .metric-card::before {
+            content: '✦';
+            position: absolute;
+            top: 10px;
+            right: 12px;
+            color: #ff0000;
+            font-size: 10px;
+            opacity: 0.5;
+        }
+        
+        .metric-card:hover {
+            border-color: #333;
+            transform: translateY(-3px);
+        }
+        
+        .metric-card.highlight {
+            border-left: 4px solid #ff0000;
+            background: linear-gradient(135deg, #0f0505 0%, #0a0a0a 100%);
+        }
+        
+        .metric-card.highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff0000, transparent);
+            animation: scanLine 2s infinite;
+        }
+        
+        @keyframes metricFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes scanLine {
+            0% { opacity: 0; }
+            50% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        
+        /* ═══════════════════════════════════════
+           COMPARISON HEADER
+        ═══════════════════════════════════════ */
+        .comp-header {
+            text-align: center;
+            margin: 40px 0 30px;
+            position: relative;
+        }
+        
+        .comp-header h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            letter-spacing: 5px;
+            color: #555;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .comp-header h3::before,
+        .comp-header h3::after {
+            content: '—————';
+            color: #222;
+        }
+        
+        .comp-header h3 span {
+            color: #ff0000;
+        }
+        
+        /* ═══════════════════════════════════════
+           DIVIDERS
+        ═══════════════════════════════════════ */
+        .red-divider {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #ff0000, transparent);
+            margin: 35px 0;
+            opacity: 0.5;
+        }
+        
+        /* ═══════════════════════════════════════
+           SELECTED ITEM DISPLAY
+        ═══════════════════════════════════════ */
+        .selected-item {
+            background: linear-gradient(135deg, #0f0505 0%, #0a0505 100%);
+            border: 2px solid #ff0000;
+            padding: 20px 28px;
+            margin: 25px 0;
+            position: relative;
+            animation: selectedPulse 2s infinite;
+        }
+        
+        .selected-item::before {
+            content: 'ANALYZING';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: #000;
+            color: #ff0000;
+            font-size: 10px;
+            letter-spacing: 3px;
+            padding: 2px 10px;
+        }
+        
+        .selected-item h4 {
+            color: #fff;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        @keyframes selectedPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(255,0,0,0.2); }
+            50% { box-shadow: 0 0 40px rgba(255,0,0,0.4); }
+        }
     </style>
     """, unsafe_allow_html=True)
     
-    if st.button("← BACK"):
+    # === FLOATING SYMBOLS ===
+    st.markdown('''
+    <div class="app-sym as1">✦</div>
+    <div class="app-sym as2">✝</div>
+    <div class="app-sym as3">★</div>
+    <div class="app-sym as4">✦</div>
+    <div class="app-sym as5">✝</div>
+    <div class="app-sym as6">★</div>
+    ''', unsafe_allow_html=True)
+    
+    # === RED GLOWS ===
+    st.markdown('''
+    <div class="app-glow ag1"></div>
+    <div class="app-glow ag2"></div>
+    <div class="app-glow ag3"></div>
+    ''', unsafe_allow_html=True)
+    
+    # === BACK BUTTON ===
+    if st.button("← EXIT"):
         st.session_state.launched = False
         st.rerun()
     
+    # === HEADER ===
     st.markdown('<div class="app-header">RECOMMENDER<span>.</span></div>', unsafe_allow_html=True)
-    st.markdown('<div class="app-sub">TF-IDF vs Neural Semantic Search — Side by Side</div>', unsafe_allow_html=True)
+    st.markdown('<div class="app-sub"><strong>TF-IDF</strong> vs <strong>Neural Semantic Search</strong> — Side by Side Comparison</div>', unsafe_allow_html=True)
     
-    tab1, tab2 = st.tabs(["✦ MOVIES", "✦ SONGS"])
+    # === TABS ===
+    tab1, tab2 = st.tabs(["✦  MOVIES", "✦  SONGS"])
     
     for tab, content_type in [(tab1, "Movies"), (tab2, "Songs")]:
         with tab:
@@ -605,17 +1030,35 @@ def show_main_app():
             
             title_col = 'title' if content_type == "Movies" else 'song'
             
-            search = st.text_input("Search", placeholder="Type to search...", key=f"search_{content_type}", label_visibility="collapsed")
+            # Search
+            search = st.text_input(
+                "Search", 
+                placeholder="Type to search...", 
+                key=f"search_{content_type}", 
+                label_visibility="collapsed"
+            )
             
             if search:
                 options = df[df[title_col].str.contains(search, case=False, na=False)][title_col].tolist()
             else:
                 options = df[title_col].head(25).tolist()
             
-            selected = st.selectbox("Select", options, key=f"select_{content_type}", label_visibility="collapsed")
+            selected = st.selectbox(
+                "Select", 
+                options, 
+                key=f"select_{content_type}", 
+                label_visibility="collapsed"
+            )
             
             if selected:
-                st.markdown("<hr style='border:none;border-top:1px solid #1a1a1a;margin:28px 0;'>", unsafe_allow_html=True)
+                # Selected item display
+                st.markdown(f'''
+                <div class="selected-item">
+                    <h4>✦ {selected}</h4>
+                </div>
+                ''', unsafe_allow_html=True)
+                
+                st.markdown('<hr class="red-divider">', unsafe_allow_html=True)
                 
                 with st.spinner(""):
                     tfidf_sim = build_tfidf_matrix(df)
@@ -623,33 +1066,47 @@ def show_main_app():
                 
                 col1, col2 = st.columns(2)
                 
+                # TF-IDF Results
                 with col1:
                     st.markdown('<div class="sec-label">TF-IDF // KEYWORD MATCHING</div>', unsafe_allow_html=True)
                     tfidf_recs = get_recommendations(selected, df, tfidf_sim, content_type)
-                    for _, row in tfidf_recs.iterrows():
+                    for i, (_, row) in enumerate(tfidf_recs.iterrows()):
+                        delay = i * 0.1
                         st.markdown(f'''
-                        <div class="card">
-                            <div class="card-title">{row[title_col]}</div>
+                        <div class="card" style="animation-delay: {delay}s;">
+                            <div class="card-title">
+                                <span class="card-rank">#{i+1}</span>
+                                {row[title_col]}
+                            </div>
                             <div class="card-score">MATCH <span>{row["similarity_score"]*100:.1f}%</span></div>
                         </div>
                         ''', unsafe_allow_html=True)
                 
+                # Neural Results
                 with col2:
                     if trans_sim is not None:
                         st.markdown('<div class="sec-label red">NEURAL // SEMANTIC</div>', unsafe_allow_html=True)
                         trans_recs = get_recommendations(selected, df, trans_sim, content_type)
-                        for _, row in trans_recs.iterrows():
+                        for i, (_, row) in enumerate(trans_recs.iterrows()):
+                            delay = i * 0.1
                             st.markdown(f'''
-                            <div class="card neural">
-                                <div class="card-title">{row[title_col]}</div>
+                            <div class="card neural" style="animation-delay: {delay}s;">
+                                <div class="card-title">
+                                    <span class="card-rank">#{i+1}</span>
+                                    {row[title_col]}
+                                </div>
                                 <div class="card-score">MATCH <span class="red">{row["similarity_score"]*100:.1f}%</span></div>
                             </div>
                             ''', unsafe_allow_html=True)
                     else:
                         st.warning("Neural model unavailable")
                 
-                st.markdown("<hr style='border:none;border-top:1px solid #1a1a1a;margin:35px 0;'>", unsafe_allow_html=True)
-                st.markdown('<div class="sec-label" style="text-align:center;">PERFORMANCE METRICS</div>', unsafe_allow_html=True)
+                # Metrics Section
+                st.markdown('''
+                <div class="comp-header">
+                    <h3>————— <span>✦</span> PERFORMANCE <span>✦</span> —————</h3>
+                </div>
+                ''', unsafe_allow_html=True)
                 
                 avg_tfidf = tfidf_recs['similarity_score'].mean() if not tfidf_recs.empty else 0
                 avg_trans = trans_recs['similarity_score'].mean() if trans_sim is not None and not trans_recs.empty else 0
@@ -658,24 +1115,33 @@ def show_main_app():
                 m1, m2, m3 = st.columns(3)
                 
                 with m1:
-                    st.markdown('<div class="metric-wrap">', unsafe_allow_html=True)
+                    st.markdown('<div class="metric-card" style="animation-delay: 0.2s;">', unsafe_allow_html=True)
                     st.metric("TF-IDF AVG", f"{avg_tfidf:.3f}")
                     st.markdown('</div>', unsafe_allow_html=True)
                     
                 with m2:
-                    st.markdown('<div class="metric-wrap">', unsafe_allow_html=True)
+                    st.markdown('<div class="metric-card" style="animation-delay: 0.4s;">', unsafe_allow_html=True)
                     st.metric("NEURAL AVG", f"{avg_trans:.3f}")
                     st.markdown('</div>', unsafe_allow_html=True)
                     
                 with m3:
-                    st.markdown('<div class="metric-wrap highlight">', unsafe_allow_html=True)
+                    st.markdown('<div class="metric-card highlight" style="animation-delay: 0.6s;">', unsafe_allow_html=True)
                     st.metric("IMPROVEMENT", f"+{improvement:.1f}%")
                     st.markdown('</div>', unsafe_allow_html=True)
+                
+                # Footer
+                st.markdown('''
+                <div style="text-align: center; margin-top: 50px; padding: 20px;">
+                    <p style="color: #222; font-size: 11px; letter-spacing: 4px;">
+                        ✦ BUILT WITH VAMP ENERGY ✦
+                    </p>
+                </div>
+                ''', unsafe_allow_html=True)
 
 
-# ──────────────────────────────────────────────
+# ══════════════════════════════════════════════
 # ROUTER
-# ──────────────────────────────────────────────
+# ══════════════════════════════════════════════
 if not st.session_state.launched:
     show_landing()
 else:
