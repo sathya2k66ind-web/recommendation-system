@@ -75,19 +75,19 @@ st.markdown("""
        LANDING PAGE
     ═══════════════════════════════════════ */
     .landing-wrap {
-        min-height: 90vh;
+        min-height: 85vh;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         text-align: center;
-        padding: 60px 20px;
+        padding: 40px 20px;
         position: relative;
     }
 
     /* Floating symbols */
     .symbol-float {
-        position: absolute;
+        position: fixed;
         color: var(--blood);
         opacity: 0.15;
         font-size: 120px;
@@ -130,7 +130,7 @@ st.markdown("""
 
     .landing-title {
         font-family: 'Space Grotesk', sans-serif;
-        font-size: clamp(48px, 10vw, 140px);
+        font-size: clamp(48px, 10vw, 120px);
         font-weight: 700;
         line-height: 0.9;
         margin: 0 0 20px;
@@ -173,7 +173,7 @@ st.markdown("""
         font-size: 15px;
         max-width: 500px;
         line-height: 1.8;
-        margin: 0 auto 60px;
+        margin: 0 auto 50px;
         font-weight: 300;
         letter-spacing: 0.5px;
         animation: fadeIn 1.2s ease forwards;
@@ -184,7 +184,7 @@ st.markdown("""
         display: flex;
         gap: 80px;
         justify-content: center;
-        margin-bottom: 60px;
+        margin-bottom: 50px;
         animation: fadeInUp 1.4s ease forwards;
     }
 
@@ -229,9 +229,31 @@ st.markdown("""
         gap: 2px;
         max-width: 900px;
         width: 100%;
-        margin: 0 auto 60px;
+        margin: 0 auto 50px;
         animation: fadeInUp 1.6s ease forwards;
         background: var(--ash);
+    }
+
+    @media (max-width: 768px) {
+        .feature-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .stat-row {
+            gap: 40px;
+        }
+        .stat-num {
+            font-size: 32px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .feature-grid {
+            grid-template-columns: 1fr;
+        }
+        .stat-row {
+            flex-direction: column;
+            gap: 30px;
+        }
     }
 
     .feature-card {
@@ -293,7 +315,7 @@ st.markdown("""
         width: 1px;
         height: 60px;
         background: linear-gradient(to bottom, transparent, var(--blood), transparent);
-        margin: 0 auto 50px;
+        margin: 0 auto 40px;
         animation: fadeIn 1s ease forwards;
     }
 
@@ -388,6 +410,26 @@ st.markdown("""
         font-style: italic;
     }
 
+    /* Select dropdown */
+    [data-baseweb="popover"] {
+        background: var(--void-light) !important;
+        border: 1px solid var(--ash) !important;
+        border-radius: 0 !important;
+    }
+
+    [data-baseweb="menu"] {
+        background: var(--void-light) !important;
+    }
+
+    [role="option"] {
+        background: var(--void-light) !important;
+        color: var(--bone) !important;
+    }
+
+    [role="option"]:hover {
+        background: var(--smoke) !important;
+    }
+
     /* ═══════════════════════════════════════
        GLASS CARDS - BRUTALIST VERSION
     ═══════════════════════════════════════ */
@@ -467,18 +509,24 @@ st.markdown("""
     }
 
     /* ═══════════════════════════════════════
-       GRADIENT TEXT - NOW BLOOD RED
+       SECTION HEADERS
     ═══════════════════════════════════════ */
-    .gradient-text {
+    .section-header {
         font-family: 'Space Grotesk', sans-serif;
-        font-weight: 700;
-        color: var(--pure);
-        letter-spacing: -1px;
+        font-size: 11px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--silver);
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
     }
 
-    .blood-text {
+    .section-header::before {
+        content: '✦';
         color: var(--blood);
-        text-shadow: 0 0 30px rgba(255,0,0,0.3);
+        font-size: 10px;
     }
 
     /* ═══════════════════════════════════════
@@ -491,6 +539,10 @@ st.markdown("""
 
     section[data-testid="stSidebar"] .block-container {
         padding-top: 40px;
+    }
+
+    section[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
+        color: var(--silver);
     }
 
     /* ═══════════════════════════════════════
@@ -515,32 +567,15 @@ st.markdown("""
     }
 
     /* ═══════════════════════════════════════
-       MISC
+       SPINNER
     ═══════════════════════════════════════ */
-    hr {
-        border: none;
-        border-top: 1px solid var(--ash);
-        margin: 40px 0;
+    .stSpinner > div {
+        border-top-color: var(--blood) !important;
     }
 
-    .section-header {
-        font-family: 'Space Grotesk', sans-serif;
-        font-size: 11px;
-        letter-spacing: 4px;
-        text-transform: uppercase;
-        color: var(--silver);
-        margin-bottom: 24px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .section-header::before {
-        content: '✦';
-        color: var(--blood);
-        font-size: 10px;
-    }
-
+    /* ═══════════════════════════════════════
+       ANIMATIONS
+    ═══════════════════════════════════════ */
     @keyframes fadeIn {
         from { opacity: 0; }
         to { opacity: 1; }
@@ -557,41 +592,12 @@ st.markdown("""
         }
     }
 
-    /* Glitch effect on hover for titles */
-    .glitch-hover:hover {
-        animation: glitch 0.3s ease infinite;
-    }
-
-    @keyframes glitch {
-        0% { transform: translate(0); }
-        20% { transform: translate(-2px, 2px); }
-        40% { transform: translate(-2px, -2px); }
-        60% { transform: translate(2px, 2px); }
-        80% { transform: translate(2px, -2px); }
-        100% { transform: translate(0); }
-    }
-
-    /* Hide Streamlit branding */
+    /* ═══════════════════════════════════════
+       HIDE STREAMLIT BRANDING
+    ═══════════════════════════════════════ */
     #MainMenu { visibility: hidden; }
     footer { visibility: hidden; }
     header { visibility: hidden; }
-
-    /* Back button special style */
-    .back-btn button {
-        background: transparent !important;
-        border: 1px solid var(--ash) !important;
-        color: var(--silver) !important;
-        padding: 8px 20px !important;
-        font-size: 11px !important;
-        letter-spacing: 2px !important;
-    }
-
-    .back-btn button:hover {
-        border-color: var(--blood) !important;
-        color: var(--blood) !important;
-        background: transparent !important;
-        box-shadow: none !important;
-    }
 </style>
 
 <div class="red-glow glow-1"></div>
@@ -610,14 +616,17 @@ if "launched" not in st.session_state:
 # LANDING PAGE
 # ==========================================
 def show_landing():
-    st.markdown('''
+    # Floating symbols
+    st.markdown("""
+    <div class="symbol-float sym-1">✦</div>
+    <div class="symbol-float sym-2">✝</div>
+    <div class="symbol-float sym-3">★</div>
+    <div class="symbol-float sym-4">✦</div>
+    """, unsafe_allow_html=True)
+    
+    # Main landing content
+    st.markdown("""
     <div class="landing-wrap">
-        
-        <!-- Floating symbols -->
-        <div class="symbol-float sym-1">✦</div>
-        <div class="symbol-float sym-2">✝</div>
-        <div class="symbol-float sym-3">★</div>
-        <div class="symbol-float sym-4">✦</div>
         
         <div class="landing-badge">
             <span class="badge-star">✦</span>
@@ -686,8 +695,9 @@ def show_landing():
         </div>
         
     </div>
-    ''', unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
+    # Button
     col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
         if st.button("ENTER ✦", use_container_width=True):
@@ -707,6 +717,7 @@ def preprocess_text(text):
     text = ' '.join([w for w in text.split() if w not in stopwords])
     return text
 
+
 @st.cache_data
 def load_data(content_type):
     if content_type == "Movies":
@@ -720,17 +731,20 @@ def load_data(content_type):
         df['combined'] = df['combined'].apply(preprocess_text)
         return df
 
+
 @st.cache_resource
 def build_tfidf_matrix(df):
     tfidf = TfidfVectorizer(max_features=5000, ngram_range=(1, 2))
     tfidf_matrix = tfidf.fit_transform(df['combined'])
     return cosine_similarity(tfidf_matrix, tfidf_matrix)
 
+
 @st.cache_resource
 def build_transformer_matrix(df):
     model = SentenceTransformer('all-MiniLM-L6-v2')
     embeddings = model.encode(df['combined'].tolist(), show_progress_bar=False)
     return cosine_similarity(embeddings, embeddings)
+
 
 def get_recommendations(title, df, cosine_sim, content_type, top_n=10):
     title_col = 'title' if content_type == "Movies" else 'song'
@@ -740,8 +754,8 @@ def get_recommendations(title, df, cosine_sim, content_type, top_n=10):
     sim_scores = sorted(list(enumerate(cosine_sim[idx])), key=lambda x: x[1], reverse=True)
     sim_scores = sim_scores[1:top_n+1]
     indices = [i[0] for i in sim_scores]
-    scores  = [i[1] for i in sim_scores]
-    result  = df.iloc[indices].copy()
+    scores = [i[1] for i in sim_scores]
+    result = df.iloc[indices].copy()
     result['similarity_score'] = scores
     return result
 
@@ -750,15 +764,14 @@ def get_recommendations(title, df, cosine_sim, content_type, top_n=10):
 # MAIN APP
 # ==========================================
 def show_main_app():
-    # Header row
+    # Header row with back button
     col_back, col_spacer = st.columns([1, 5])
     with col_back:
-        st.markdown('<div class="back-btn">', unsafe_allow_html=True)
         if st.button("← BACK"):
             st.session_state.launched = False
             st.rerun()
-        st.markdown('</div>', unsafe_allow_html=True)
 
+    # Title
     st.markdown("""
         <h1 style='
             font-family: Space Grotesk, sans-serif;
@@ -780,12 +793,14 @@ def show_main_app():
         </p>
     """, unsafe_allow_html=True)
 
+    # Tabs
     tab1, tab2 = st.tabs(["✦  MOVIES", "✦  SONGS"])
 
     for tab, content_type in [(tab1, "Movies"), (tab2, "Songs")]:
         with tab:
             df = load_data(content_type)
 
+            # Dataset info
             st.markdown(f"""
                 <div class="section-header">
                     Dataset: {len(df)} {content_type}
@@ -794,6 +809,7 @@ def show_main_app():
 
             title_col = 'title' if content_type == "Movies" else 'song'
             
+            # Search input
             search_query = st.text_input(
                 f"Search {content_type.lower()}",
                 placeholder=f"Type to search...",
@@ -801,12 +817,14 @@ def show_main_app():
                 label_visibility="collapsed"
             )
 
+            # Filter options
             if search_query:
                 filtered = df[df[title_col].str.contains(search_query, case=False, na=False)]
                 options = filtered[title_col].tolist()
             else:
                 options = df[title_col].head(20).tolist()
 
+            # Selection dropdown
             selected_title = st.selectbox(
                 f"Select {content_type[:-1].lower()}",
                 options=options,
@@ -815,12 +833,17 @@ def show_main_app():
             )
 
             if selected_title:
-                st.markdown("<hr>", unsafe_allow_html=True)
+                # Divider
+                st.markdown("""
+                    <hr style='border: none; border-top: 1px solid #2a2a2a; margin: 30px 0;'>
+                """, unsafe_allow_html=True)
 
+                # Build matrices
                 with st.spinner(""):
                     tfidf_sim = build_tfidf_matrix(df)
                     transformer_sim = build_transformer_matrix(df)
 
+                # Two columns for comparison
                 col1, col2 = st.columns(2)
 
                 # TF-IDF Column
@@ -875,18 +898,24 @@ def show_main_app():
                             </div>
                             """, unsafe_allow_html=True)
 
-                # Metrics
-                st.markdown("<hr>", unsafe_allow_html=True)
+                # Metrics Section
                 st.markdown("""
-                    <div class="section-header" style="text-align: center; justify-content: center;">
+                    <hr style='border: none; border-top: 1px solid #2a2a2a; margin: 40px 0;'>
+                """, unsafe_allow_html=True)
+                
+                st.markdown("""
+                    <div class="section-header" style="justify-content: center;">
                         PERFORMANCE METRICS
                     </div>
                 """, unsafe_allow_html=True)
 
-                m1, m2, m3 = st.columns(3)
+                # Calculate metrics
                 avg_tfidf = tfidf_recs['similarity_score'].mean() if not tfidf_recs.empty else 0
                 avg_transformer = transformer_recs['similarity_score'].mean() if not transformer_recs.empty else 0
                 improvement = ((avg_transformer - avg_tfidf) / avg_tfidf * 100) if avg_tfidf > 0 else 0
+
+                # Metrics columns
+                m1, m2, m3 = st.columns(3)
 
                 with m1:
                     st.markdown("""
@@ -903,13 +932,15 @@ def show_main_app():
                     st.markdown("</div>", unsafe_allow_html=True)
 
                 with m3:
-                    st.markdown(f"""
+                    st.markdown("""
                         <div class='glass-card' style='text-align:center;padding:28px 20px;border-left-color:#ff0000;'>
                     """, unsafe_allow_html=True)
                     st.metric("IMPROVEMENT", f"+{improvement:.1f}%")
                     st.markdown("</div>", unsafe_allow_html=True)
 
-    # Sidebar
+    # ==========================================
+    # SIDEBAR
+    # ==========================================
     with st.sidebar:
         st.markdown("""
             <div style='margin-bottom: 32px;'>
@@ -951,6 +982,15 @@ def show_main_app():
         """, unsafe_allow_html=True)
         
         st.code("Python 3.11\nPandas\nscikit-learn\nsentence-transformers\nStreamlit", language=None)
+
+        # Footer
+        st.markdown("""
+            <div style='margin-top: 48px; text-align: center;'>
+                <p style='color: #333; font-size: 10px; letter-spacing: 2px;'>
+                    BUILT WITH ✝
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
 
 
 # ==========================================
