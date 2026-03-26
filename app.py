@@ -1140,7 +1140,7 @@ def show_main_app():
 
 
 # ══════════════════════════════════════════════
-# ROUTER
+# ROUTERs
 # ══════════════════════════════════════════════
 if not st.session_state.launched:
     show_landing()
